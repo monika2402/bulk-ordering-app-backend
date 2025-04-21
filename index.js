@@ -9,26 +9,26 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// ✅ Allow Vercel frontend & local dev with credentials
+// ✅ Allow frontend URLs (both local and deployed)
 const allowedOrigins = [
-  'http://localhost:3000',
-  'https://bulk-ordering-app-frontend.vercel.app'
+  'http://localhost:3000', // Local development URL
+  'https://bulk-ordering-app-frontend.vercel.app/' // Deployed frontend URL
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true, // allow cookies
+  origin: allowedOrigins,  // Allow only specified origins
+  credentials: true, // Allow cookies (and credentials)
 }));
 
 // Middleware
-app.use(express.json());
+app.use(express.json());  // Parse JSON data
 
 // Routes
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/auth', authRoutes);
 
-// Health check
+// Health check route
 app.get('/', (req, res) => {
   res.send('Backend Server is Running 🚀');
 });
