@@ -5,7 +5,8 @@ const cors = require('cors');
 const db = require('./db');
 const productRoutes = require('./routes/products'); 
 const orderRoutes = require('./routes/orders');  
-const authRoutes = require('./routes/auth');    
+const authRoutes = require('./routes/auth');  
+require('dotenv').config();  
 
 const app = express();
 const port = 5000; // Backend will run on port 5000

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const db = require('../db'); // PostgreSQL DB connection
 
 const router = express.Router();
-const JWT_SECRET = 'your_secret_key'; // Use env variable in production
+const JWT_SECRET = 'Moni@2402'; // Use env variable in production
 
 // ✅ Login Route
 router.post('/login', async (req, res) => {
