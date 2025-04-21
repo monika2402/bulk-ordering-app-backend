@@ -54,38 +54,37 @@ const authRoutes = require('./routes/auth');
 require('dotenv').config();
 
 const app = express();
-const port = 5000; // Backend will run on port 5000
+const port = 5000;
 
-// Middleware
+// ✅ Safe CORS Setup
 const allowedOrigins = [
   'http://localhost:3000',
   'https://bulk-ordering-app-frontend.vercel.app'
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin like mobile apps or curl
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like Postman or curl)
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+      return callback(null, true);
     }
-  }
-}));
-app.use(express.json()); 
+    return callback(new Error(`CORS not allowed for origin: ${origin}`));
+  },
+  credentials: true // Optional: if you're using cookies or headers for auth
+};
 
-// Use routes
+app.use(cors(corsOptions));
+app.use(express.json());
+
+// Routes
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/auth', authRoutes);
 
-// Root route for testing
 app.get('/', (req, res) => {
   res.send('Backend Server is Running 🚀');
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
