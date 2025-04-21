@@ -57,8 +57,22 @@ const app = express();
 const port = 5000; // Backend will run on port 5000
 
 // Middleware
-app.use(cors()); // Allow cross-origin requests from the frontend
-app.use(express.json()); // Parse JSON data
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://bulk-ordering-app-frontend.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin like mobile apps or curl
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+app.use(express.json()); 
 
 // Use routes
 app.use('/api/products', productRoutes);
